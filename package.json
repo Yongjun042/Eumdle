@@ -2,6 +2,7 @@
   "name": "game",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://yongjun042.github.io/eumdle/",
   "dependencies": {
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",

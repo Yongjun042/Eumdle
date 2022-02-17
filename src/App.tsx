@@ -84,7 +84,7 @@ function App() {
     if (loaded?.solution !== solution) {
       return []
     }
-    const gameWasWon = loaded.guesses.includes(solution)
+    const gameWasWon = loaded?.guesses.includes(solution)
     if (gameWasWon) {
       setIsGameWon(true)
     }

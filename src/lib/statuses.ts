@@ -7,7 +7,7 @@ export const getStatuses = (
 ): { [key: string]: CharStatus } => {
   const charObj: { [key: string]: CharStatus } = {}
 
-  guesses.forEach((word) => {
+  guesses?.forEach((word) => {
     word.split('').forEach((letter, i) => {
       if (!solution.includes(letter)) {
         // make status absent

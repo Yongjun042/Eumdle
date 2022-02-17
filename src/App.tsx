@@ -88,13 +88,13 @@ function App() {
     if (gameWasWon) {
       setIsGameWon(true)
     }
-    if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
+    if (loaded?.guesses.length === MAX_CHALLENGES && !gameWasWon) {
       setIsGameLost(true)
       showErrorAlert(CORRECT_WORD_MESSAGE(combined), {
         persist: true,
       })
     }
-    return loaded.guesses
+    return loaded?.guesses
   })
 
   const [stats, setStats] = useState(() => loadStats())

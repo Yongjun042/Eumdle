@@ -1,8 +1,8 @@
 import { getStatuses } from '../../lib/statuses'
 import { Key } from './Key'
 import { useEffect } from 'react'
-import { ENTER_TEXT, DELETE_TEXT } from '../../constants/strings'
-
+import { ENTER_TEXT, DELETE_TEXT, SPACE_TEXT } from '../../constants/strings'
+import { SHIFTWORD, KEYMAP } from '../../constants/alphabet'
 type Props = {
   onChar: (value: string) => void
   onDelete: () => void
@@ -25,6 +25,8 @@ export const Keyboard = ({
       onEnter()
     } else if (value === 'DELETE') {
       onDelete()
+    } else if (value === 'SPACE') {
+      onChar(' ')
     } else {
       onChar(value)
     }
@@ -36,10 +38,18 @@ export const Keyboard = ({
         onEnter()
       } else if (e.code === 'Backspace') {
         onDelete()
+      } else if (e.code === 'Space') {
+        onChar(' ')
       } else {
-        const key = e.key.toUpperCase()
-        if (key.length === 1 && key >= 'A' && key <= 'Z') {
-          onChar(key)
+        let key = e.key
+        if (!SHIFTWORD.includes(key)) {
+          key = key.toLowerCase()
+        }
+        if (
+          key.length === 1 &&
+          ((key >= 'a' && key <= 'z') || SHIFTWORD.includes(key))
+        ) {
+          onChar(KEYMAP[key])
         }
       }
     }
@@ -52,7 +62,24 @@ export const Keyboard = ({
   return (
     <div>
       <div className="flex justify-center mb-1">
-        {['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map((key) => (
+        {['ㅃ', 'ㅉ', 'ㄸ', 'ㄲ', 'ㅆ'].map((key) => (
+          <Key
+            value={key}
+            key={key}
+            onClick={onClick}
+            status={charStatuses[key]}
+            isRevealing={isRevealing}
+          />
+        ))}
+        <Key
+          width={65.4}
+          value="SPACE"
+          onClick={onClick}
+          status={charStatuses[' ']}
+        >
+          {SPACE_TEXT}
+        </Key>
+        {['ㅒ', 'ㅖ'].map((key) => (
           <Key
             value={key}
             key={key}
@@ -63,7 +90,20 @@ export const Keyboard = ({
         ))}
       </div>
       <div className="flex justify-center mb-1">
-        {['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map((key) => (
+        {['ㅂ', 'ㅈ', 'ㄷ', 'ㄱ', 'ㅅ', 'ㅛ', 'ㅕ', 'ㅑ', 'ㅐ', 'ㅔ'].map(
+          (key) => (
+            <Key
+              value={key}
+              key={key}
+              onClick={onClick}
+              status={charStatuses[key]}
+              isRevealing={isRevealing}
+            />
+          )
+        )}
+      </div>
+      <div className="flex justify-center mb-1">
+        {['ㅁ', 'ㄴ', 'ㅇ', 'ㄹ', 'ㅎ', 'ㅗ', 'ㅓ', 'ㅏ', 'ㅣ'].map((key) => (
           <Key
             value={key}
             key={key}
@@ -77,7 +117,7 @@ export const Keyboard = ({
         <Key width={65.4} value="ENTER" onClick={onClick}>
           {ENTER_TEXT}
         </Key>
-        {['Z', 'X', 'C', 'V', 'B', 'N', 'M'].map((key) => (
+        {['ㅋ', 'ㅌ', 'ㅊ', 'ㅍ', 'ㅠ', 'ㅜ', 'ㅡ'].map((key) => (
           <Key
             value={key}
             key={key}

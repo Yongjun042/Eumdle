@@ -30,6 +30,7 @@ import {
   isWinningWord,
   solution,
   findFirstUnusedReveal,
+  combined,
 } from './lib/words'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
 import {
@@ -42,6 +43,16 @@ import {
 import './App.css'
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { useAlert } from './context/AlertContext'
+
+import {
+  ONSET,
+  NUCLEUS,
+  CODA,
+  VOWELMAP,
+  CONSOMAP,
+  CONSOCOMB,
+  CONSOREV,
+} from './constants/alphabet'
 
 function App() {
   const prefersDarkMode = window.matchMedia(
@@ -79,7 +90,7 @@ function App() {
     }
     if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
       setIsGameLost(true)
-      showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+      showErrorAlert(CORRECT_WORD_MESSAGE(combined), {
         persist: true,
       })
     }
@@ -164,12 +175,74 @@ function App() {
       guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
-      setCurrentGuess(`${currentGuess}${value}`)
+      let currentSize = currentGuess.length - 1
+      let newGuess = null
+      if (currentSize === -1 && ONSET.includes(value)) {
+        newGuess = value
+        //모음만 통과 모음 합치기
+      } else if (currentSize % 3 === 0 && NUCLEUS.includes(value)) {
+        newGuess = currentGuess.concat(value)
+        //자음 통과 모음의 경우 합칠 수 있으면 합치기
+      } else if (currentSize % 3 === 1) {
+        if (CODA.includes(value)) {
+          newGuess = currentGuess.concat(value)
+          //모음 처리
+        } else if (VOWELMAP.hasOwnProperty(currentGuess[currentSize] + value)) {
+          console.log(VOWELMAP[currentGuess[currentSize] + value])
+          newGuess = currentGuess
+            .slice(0, currentSize)
+            .concat(VOWELMAP[currentGuess[currentSize] + value])
+        }
+        //자음통과 모음이 올 경우 다음 글자로 처리
+      } else if (currentSize % 3 === 2) {
+        //겹자음 처리
+        if (CONSOMAP.hasOwnProperty(currentGuess[currentSize] + value)) {
+          newGuess = currentGuess
+            .slice(0, currentSize)
+            .concat(CONSOMAP[currentGuess[currentSize] + value])
+        }
+        //2번째 글자 자음 입력
+        else if (ONSET.includes(value)) {
+          newGuess = currentGuess.concat(value)
+          //2번째 글자 모음 입력. 자음 땡겨오기
+        } else if (NUCLEUS.includes(value)) {
+          //겹자음이면 나누기
+          if (CONSOCOMB.includes(currentGuess[currentSize])) {
+            let splitted = CONSOREV[currentGuess[currentSize]]
+            newGuess = currentGuess
+              .slice(0, 2)
+              .concat(splitted[0], splitted[1], value)
+          } else {
+            newGuess = currentGuess
+              .slice(0, 2)
+              .concat(' ', currentGuess[2], value)
+          }
+        }
+      }
+      if (newGuess) {
+        setCurrentGuess(newGuess)
+      }
+    } else if (
+      currentGuess.length === MAX_WORD_LENGTH &&
+      guesses.length < MAX_CHALLENGES &&
+      !isGameWon &&
+      CONSOMAP.hasOwnProperty(currentGuess[currentGuess.length - 1] + value)
+    ) {
+      let newGuess = currentGuess
+        .slice(0, 5)
+        .concat(CONSOMAP[currentGuess[currentGuess.length - 1] + value])
+      setCurrentGuess(newGuess)
     }
+    //setCurrentGuess(`${currentGuess}${value}`)
   }
 
   const onDelete = () => {
-    setCurrentGuess(currentGuess.slice(0, -1))
+    //종성 공백 처리
+    if (currentGuess[currentGuess.length - 2] === ' ') {
+      setCurrentGuess(currentGuess.slice(0, -2))
+    } else {
+      setCurrentGuess(currentGuess.slice(0, -1))
+    }
   }
 
   const onEnter = () => {
@@ -229,7 +302,7 @@ function App() {
       if (guesses.length === MAX_CHALLENGES - 1) {
         setStats(addStatsForCompletedGame(stats, guesses.length + 1))
         setIsGameLost(true)
-        showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+        showErrorAlert(CORRECT_WORD_MESSAGE(combined), {
           persist: true,
           delayMs: REVEAL_TIME_MS * MAX_WORD_LENGTH + 1,
         })

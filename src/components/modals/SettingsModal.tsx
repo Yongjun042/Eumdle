@@ -23,20 +23,20 @@ export const SettingsModal = ({
   handleHighContrastMode,
 }: Props) => {
   return (
-    <BaseModal title="Settings" isOpen={isOpen} handleClose={handleClose}>
+    <BaseModal title="설정" isOpen={isOpen} handleClose={handleClose}>
       <div className="grid-cols-2 gap-4">
         <SettingsToggle
-          settingName="Hard Mode"
+          settingName="어려운 난이도"
           flag={isHardMode}
           handleFlag={handleHardMode}
         />
         <SettingsToggle
-          settingName="Dark Mode"
+          settingName="다크 모드"
           flag={isDarkMode}
           handleFlag={handleDarkMode}
         />
         <SettingsToggle
-          settingName="High Contrast Mode"
+          settingName="고대비"
           flag={isHighContrastMode}
           handleFlag={handleHighContrastMode}
         />

@@ -2,6 +2,7 @@ import { WORDS } from '../constants/wordlist'
 import { VALID_GUESSES } from '../constants/validGuesses'
 import { WRONG_SPOT_MESSAGE, NOT_CONTAINED_MESSAGE } from '../constants/strings'
 import { getGuessStatuses } from './statuses'
+import { COMBINED } from '../constants/combined'
 
 export const isWordInWordList = (word: string) => {
   return (
@@ -53,17 +54,18 @@ export const findFirstUnusedReveal = (word: string, guesses: string[]) => {
 
 export const getWordOfDay = () => {
   // January 1, 2022 Game Epoch
-  const epochMs = new Date('January 1, 2022 00:00:00').valueOf()
+  const epochMs = new Date('February 18, 2022 00:00:00').valueOf()
   const now = Date.now()
   const msInDay = 86400000
   const index = Math.floor((now - epochMs) / msInDay)
   const nextday = (index + 1) * msInDay + epochMs
 
   return {
-    solution: WORDS[index % WORDS.length].toUpperCase(),
+    solution: WORDS[index % WORDS.length],
     solutionIndex: index,
     tomorrow: nextday,
+    combined: COMBINED[index % WORDS.length],
   }
 }
 
-export const { solution, solutionIndex, tomorrow } = getWordOfDay()
+export const { solution, solutionIndex, tomorrow, combined } = getWordOfDay()

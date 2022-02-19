@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/eumdle/static/css/main.1325e3a1.css",
-    "main.js": "/eumdle/static/js/main.d7b26db2.js",
+    "main.js": "/eumdle/static/js/main.ddd3fb56.js",
     "static/js/787.68528e04.chunk.js": "/eumdle/static/js/787.68528e04.chunk.js",
     "index.html": "/eumdle/index.html",
     "main.1325e3a1.css.map": "/eumdle/static/css/main.1325e3a1.css.map",
-    "main.d7b26db2.js.map": "/eumdle/static/js/main.d7b26db2.js.map",
+    "main.ddd3fb56.js.map": "/eumdle/static/js/main.ddd3fb56.js.map",
     "787.68528e04.chunk.js.map": "/eumdle/static/js/787.68528e04.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1325e3a1.css",
-    "static/js/main.d7b26db2.js"
+    "static/js/main.ddd3fb56.js"
   ]
 }

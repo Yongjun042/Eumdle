@@ -1,4 +1,5 @@
 import { solution } from './words'
+import { VOWELCOMB, CONSOCOMB, VOWELREV, CONSOREV } from '../constants/alphabet'
 
 export type CharStatus = 'absent' | 'present' | 'correct'
 
@@ -9,19 +10,46 @@ export const getStatuses = (
 
   guesses?.forEach((word) => {
     word.split('').forEach((letter, i) => {
-      if (!solution.includes(letter)) {
-        // make status absent
-        return (charObj[letter] = 'absent')
-      }
+      if (VOWELCOMB.includes(letter) || CONSOCOMB.includes(letter)) {
+        let letter2
+        if (VOWELCOMB.includes(letter)) {
+          letter2 = VOWELREV[letter]
+        } else {
+          letter2 = CONSOREV[letter]
+        }
+        if (!solution.includes(letter)) {
+          // make status absent
+          return (
+            (charObj[letter2[0]] = 'absent'), (charObj[letter2[1]] = 'absent')
+          )
+        }
+        if (letter === solution[i]) {
+          //make status correct
+          return (
+            (charObj[letter2[0]] = 'correct'), (charObj[letter2[1]] = 'correct')
+          )
+        }
+        if (charObj[letter] !== 'correct') {
+          //make status present
+          return (
+            (charObj[letter2[0]] = 'present'), (charObj[letter2[1]] = 'present')
+          )
+        }
+      } else {
+        if (!solution.includes(letter)) {
+          // make status absent
+          return (charObj[letter] = 'absent')
+        }
 
-      if (letter === solution[i]) {
-        //make status correct
-        return (charObj[letter] = 'correct')
-      }
+        if (letter === solution[i]) {
+          //make status correct
+          return (charObj[letter] = 'correct')
+        }
 
-      if (charObj[letter] !== 'correct') {
-        //make status present
-        return (charObj[letter] = 'present')
+        if (charObj[letter] !== 'correct') {
+          //make status present
+          return (charObj[letter] = 'present')
+        }
       }
     })
   })

@@ -29,7 +29,7 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
         <Cell value="ㅇ" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        'ㄴ' 이라는 글자는 올바른 위치에 있습니다.
+        'ㅊ' 이라는 글자는 올바른 위치에 있습니다.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
